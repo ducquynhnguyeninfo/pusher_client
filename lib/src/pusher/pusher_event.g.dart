@@ -6,8 +6,8 @@ PusherEvent _$PusherEventFromJson(Map<String, dynamic> json) {
   return PusherEvent(
     channelName: json['channelName'] as String,
     eventName: json['eventName'] as String,
-    data: json['data'] as String,
-    userId: json['userId'] as String,
+    data: json['data'] != null ? json['data'] as String : null,
+    userId: json['userId'] != null ? json['userId'] as String : null,
   );
 }
 

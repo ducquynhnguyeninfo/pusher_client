@@ -13,8 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  PusherClient pusher;
-  Channel channel;
+  late PusherClient pusher;
+  late Channel channel;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
           headers: {
             'Authorization': 'Bearer $token',
           },
-        ),
+        ), cluster: '',
       ),
       enableLogging: true,
     );
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     channel.bind('status-update', (event) {
-      log(event.data);
+      log(event.data!);
     });
 
     channel.bind('order-filled', (event) {

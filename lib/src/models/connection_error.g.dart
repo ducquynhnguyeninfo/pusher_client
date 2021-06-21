@@ -4,9 +4,9 @@ part of 'connection_error.dart';
 
 ConnectionError _$ConnectionErrorFromJson(Map<String, dynamic> json) {
   return ConnectionError(
-    message: json['message'] as String,
-    code: json['code'] as String,
-    exception: json['exception'] as String,
+    message: json['message'] != null ? json['message'] : null,
+    code: json['code'] != null ? json['code'] : null,
+    exception: json['exception'] != null ? json['exception'] as String : null,
   );
 }
 

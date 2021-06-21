@@ -21,10 +21,10 @@ class PusherClient extends StreamHandler {
       const MethodChannel('com.github.chinloyal/pusher_client');
   static const classId = 'PusherClient';
 
-  static PusherClient _singleton;
-  void Function(ConnectionStateChange) _onConnectionStateChange;
-  void Function(ConnectionError) _onConnectionError;
-  String _socketId;
+  static PusherClient? _singleton;
+  late void Function(ConnectionStateChange) ? _onConnectionStateChange;
+  late void Function(ConnectionError) ? _onConnectionError;
+  late String _socketId;
 
   PusherClient._(
     String appKey,
@@ -40,20 +40,22 @@ class PusherClient extends StreamHandler {
     bool enableLogging = true,
     bool autoConnect = true,
   }) {
-    _singleton ??= PusherClient._(
-      appKey,
-      options,
-      enableLogging: enableLogging,
-      autoConnect: autoConnect,
-    );
+    if (_singleton == null) {
+      _singleton = PusherClient._(
+        appKey,
+        options,
+        enableLogging: enableLogging,
+        autoConnect: autoConnect,
+      );
+    }
 
     final initArgs = InitArgs(enableLogging: enableLogging);
 
-    _singleton._init(appKey, options, initArgs);
+    _singleton?._init(appKey, options, initArgs);
 
-    if (autoConnect) _singleton.connect();
+    if (autoConnect) _singleton?.connect();
 
-    return _singleton;
+    return _singleton!;
   }
 
   Future _init(String appKey, PusherOptions options, InitArgs initArgs) async {
@@ -118,18 +120,23 @@ class PusherClient extends StreamHandler {
   }
 
   Future<void> _eventHandler(event) async {
-    var result = EventStreamResult.fromJson(jsonDecode(event.toString()));
+    try {
+      var result = EventStreamResult.fromJson(jsonDecode(event.toString()));
 
-    if (result.isConnectionStateChange) {
-      _socketId = await _channel.invokeMethod('getSocketId');
+      if (result.isConnectionStateChange) {
+        _socketId = await _channel.invokeMethod('getSocketId');
 
-      if (_onConnectionStateChange != null)
-        _onConnectionStateChange(result.connectionStateChange);
-    }
+        if (_onConnectionStateChange != null)
+          _onConnectionStateChange!(result.connectionStateChange!);
+      }
 
-    if (result.isConnectionError) {
-      if (_onConnectionError != null)
-        _onConnectionError(result.connectionError);
+      if (result.isConnectionError) {
+        if (_onConnectionError != null)
+          _onConnectionError!(result.connectionError!);
+      }
+    } catch (e) {
+      print(e);
+      print('on data :  ${jsonDecode(event.toString())}');
     }
   }
 }
@@ -138,7 +145,7 @@ class InitArgs {
   final bool enableLogging;
 
   InitArgs({
-    this.enableLogging,
+    required this.enableLogging,
   });
 
   Map<String, dynamic> toJson() => _$InitArgsToJson(this);

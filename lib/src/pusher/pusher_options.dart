@@ -5,14 +5,14 @@ part 'pusher_options.g.dart';
 class PusherOptions {
   /// Sets the authorization options to be used when authenticating private,
   /// private-encrypted and presence channels.
-  final PusherAuth auth;
+  final PusherAuth? auth;
 
   /// A "cluster" represents the physical location of the servers that handle
   /// requests from your Channels app.
   ///
   /// For example, the Channels cluster `mt1`  is in Northern Virginia
   /// in the United States.
-  final String cluster;
+  final String? cluster;
 
   /// The host to which connections will be made.
   final String host;
@@ -59,5 +59,6 @@ class PusherOptions {
 
   factory PusherOptions.fromJson(Map<String, dynamic> json) =>
       _$PusherOptionsFromJson(json);
+
   Map<String, dynamic> toJson() => _$PusherOptionsToJson(this);
 }

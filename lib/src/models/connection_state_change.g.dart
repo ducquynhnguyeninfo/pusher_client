@@ -5,8 +5,10 @@ part of 'connection_state_change.dart';
 ConnectionStateChange _$ConnectionStateChangeFromJson(
     Map<String, dynamic> json) {
   return ConnectionStateChange(
-    currentState: json['currentState'] as String,
-    previousState: json['previousState'] as String,
+    currentState:
+        json['currentState'] != null ? json['currentState'] as String : null,
+    previousState:
+        json['previousState'] != null ? json['previousState'] as String : null,
   );
 }
 

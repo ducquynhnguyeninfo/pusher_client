@@ -10,20 +10,21 @@ class PusherEvent {
   final String eventName;
 
   /// The data that was passed when the event was triggered.
-  final String data;
+  final String? data;
 
   /// The ID of the user who triggered the event. Only present in
   /// client event on presence channels.
-  final String userId;
+  final String? userId;
 
   PusherEvent({
-    this.channelName,
-    this.eventName,
+    required this.channelName,
+    required this.eventName,
     this.data,
     this.userId,
   });
 
   factory PusherEvent.fromJson(Map<String, dynamic> json) =>
       _$PusherEventFromJson(json);
+
   Map<String, dynamic> toJson() => _$PusherEventToJson(this);
 }

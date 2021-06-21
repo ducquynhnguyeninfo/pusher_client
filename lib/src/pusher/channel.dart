@@ -80,9 +80,9 @@ class Channel extends StreamHandler {
 
     if (result.isPusherEvent) {
       var callback = _eventCallbacks[
-          result.pusherEvent.channelName + result.pusherEvent.eventName];
+          result.pusherEvent!.channelName + result.pusherEvent!.eventName];
       if (callback != null) {
-        callback(result.pusherEvent);
+        callback(result.pusherEvent!);
       }
     }
   }
